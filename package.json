@@ -1,0 +1,20 @@
+{
+  "name": "clip-to-wsl",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "ClipToWSL - MCP server for Windows clipboard access from WSL",
+  "scripts": {
+    "build": "npm run build:mcp && npm run build:clipboard",
+    "build:mcp": "cd mcp-server && npm run build",
+    "build:clipboard": "cd clipboard-reader && ./build.sh",
+    "install:all": "cd mcp-server && npm install",
+    "clean": "cd mcp-server && npm run clean && cd ../clipboard-reader && rm -f *.exe *.o",
+    "test": "cd mcp-server && npm test"
+  },
+  "keywords": ["mcp", "clipboard", "wsl", "windows", "cross-platform"],
+  "author": "",
+  "license": "MIT",
+  "workspaces": [
+    "mcp-server"
+  ]
+}

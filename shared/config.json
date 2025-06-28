@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "clip-to-wsl": {
+      "command": "node",
+      "args": ["/path/to/ClipToWslMcp/mcp-server/dist/index.js"],
+      "env": {
+        "CLIPBOARD_EXE_PATH": "/path/to/ClipToWslMcp/clipboard-reader/clipreader.exe"
+      }
+    }
+  }
+}
