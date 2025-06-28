@@ -1,0 +1,23 @@
+{
+  "name": "clip-to-wsl-mcp",
+  "version": "1.0.0",
+  "description": "MCP server that enables reading Windows clipboard from WSL",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["mcp", "clipboard", "wsl", "windows", "claude"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.22.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "bin": {
+    "clip-to-wsl-mcp": "./index.js"
+  }
+}

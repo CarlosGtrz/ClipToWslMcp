@@ -1,7 +1,7 @@
 CXX = x86_64-w64-mingw32-g++
-CXXFLAGS = -std=c++17 -O2 -Wall -Wextra -static
+CXXFLAGS = -std=c++17 -Os -Wall -Wextra -static -s -ffunction-sections -fdata-sections
 INCLUDES = -I./src
-LIBS = -lole32 -lgdi32 -lgdiplus -luser32 -lstdc++
+LIBS = -lole32 -lgdi32 -lgdiplus -luser32 -lstdc++ -Wl,--gc-sections
 TARGET = clipreader.exe
 SRCDIR = src
 SOURCES = $(SRCDIR)/main.cpp $(SRCDIR)/clipboard.cpp $(SRCDIR)/base64.cpp

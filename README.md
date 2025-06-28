@@ -1,6 +1,8 @@
-# ClipToWSL
+# ClipToWSL MCP Server
 
 ClipToWSL is a Model Context Protocol (MCP) server that enables AI coding agents like Claude Code to read Windows clipboard contents from within WSL (Windows Subsystem for Linux). This allows seamless access to clipboard data including text and images when working in WSL environments.
+
+> **Quick Start**: For easy installation, download the [release package](release/) which includes pre-built binaries and automated setup scripts.
 
 ## Features
 
@@ -36,37 +38,47 @@ Communication between components uses JSON-RPC over stdin/stdout pipes.
 
 ## Installation
 
-### 1. Clone the Repository
+### Option 1: Quick Install (Recommended)
+
+Download the [release package](release/) which includes pre-built binaries:
 
 ```bash
+# 1. Download and extract the release package
+wget <release-url> # or download manually
+unzip clip-to-wsl-mcp-release.zip
+cd release/
+
+# 2. Run the automated installer
+./install.sh
+
+# 3. Follow the configuration instructions printed by the installer
+```
+
+The installer will:
+- Install Node.js dependencies
+- Set executable permissions
+- Generate Claude Code configuration template
+- Provide next steps for setup
+
+### Option 2: Build from Source
+
+For development or customization:
+
+```bash
+# 1. Clone the repository
 git clone <repository-url>
 cd ClipToWslMcp
-```
 
-### 2. Install Dependencies
-
-```bash
-# Install system dependencies for building
+# 2. Install build dependencies
 sudo apt update
 sudo apt install gcc-mingw-w64-x86-64-posix g++-mingw-w64-x86-64-posix
-
-# Install Node.js dependencies
 npm install -g typescript
-cd mcp-server && npm install
-```
 
-### 3. Build the Project
+# 3. Install Node.js dependencies
+cd mcp-server && npm install && cd ..
 
-```bash
-# Build both components
-npm run build
-
-# Or build individually:
-# Build Windows executable
-cd clipboard-reader && ./build.sh
-
-# Build MCP server
-cd mcp-server && npm run build
+# 4. Build the project
+./create-release.sh  # Creates optimized release build
 ```
 
 ## Configuration
@@ -75,10 +87,26 @@ cd mcp-server && npm run build
 
 Add the following configuration to your Claude Code settings:
 
-**Linux/WSL**: `~/.config/claude-desktop/config.json`
+**Linux/WSL**: `~/.config/claude-desktop/claude_desktop_config.json`
 **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 **Windows**: `%APPDATA%/Claude/claude_desktop_config.json`
 
+#### For Release Package Installation:
+```json
+{
+  "mcpServers": {
+    "clip-to-wsl": {
+      "command": "node",
+      "args": ["/path/to/release/index.js"],
+      "env": {
+        "CLIPBOARD_EXE_PATH": "/path/to/release/clipreader.exe"
+      }
+    }
+  }
+}
+```
+
+#### For Source Build Installation:
 ```json
 {
   "mcpServers": {
@@ -93,7 +121,7 @@ Add the following configuration to your Claude Code settings:
 }
 ```
 
-**Important**: Replace `/full/path/to/ClipToWslMcp` with the actual absolute path to your ClipToWSL installation.
+**Important**: Replace the paths with your actual installation directory. The automated installer creates a `claude-config-example.json` file with the correct paths for your system.
 
 ### Environment Variables
 
@@ -201,15 +229,23 @@ ClipToWslMcp/
 │   │   ├── clipboard.h
 │   │   ├── base64.cpp      # Base64 encoding
 │   │   └── base64.h
-│   ├── Makefile            # Build configuration
-│   └── build.sh            # Build script
+│   ├── Makefile            # Build configuration with optimizations
+│   └── clipreader.exe      # Built executable (after build)
 ├── mcp-server/             # TypeScript MCP server
 │   ├── src/
 │   │   ├── index.ts        # Main server
 │   │   ├── clipboard-manager.ts  # Process management
 │   │   └── types.ts        # Type definitions
+│   ├── dist/               # Compiled JavaScript (after build)
 │   ├── package.json
 │   └── tsconfig.json
+├── release/                # Ready-to-use release package
+│   ├── index.js           # Compiled MCP server
+│   ├── clipreader.exe     # Optimized Windows executable
+│   ├── package.json       # Runtime dependencies only
+│   ├── install.sh         # Automated installer
+│   └── README.md          # Installation instructions
+├── create-release.sh       # Automated release builder
 ├── shared/                 # Shared configuration
 │   └── config.json         # Claude Code config template
 └── docs/                   # Documentation
@@ -217,10 +253,26 @@ ClipToWslMcp/
 
 ### Building from Source
 
-1. Install development dependencies
+1. Install development dependencies (MinGW-w64, Node.js, TypeScript)
 2. Cross-compile the Windows executable using MinGW-w64
 3. Build the TypeScript MCP server
-4. Test integration between components
+4. Use `./create-release.sh` to create optimized release package
+5. Test integration between components
+
+### Creating Release Package
+
+The automated release builder creates a distribution-ready package:
+
+```bash
+./create-release.sh
+```
+
+This script:
+- Builds optimized Windows executable with size optimization
+- Compiles TypeScript to JavaScript
+- Creates release package with runtime dependencies only
+- Generates installation scripts and documentation
+- Produces a standalone package ready for distribution
 
 ### Contributing
 
