@@ -1,0 +1,37 @@
+# ClipToWSL MCP Specification
+
+## Overview
+We will create an MCP (Model Context Protocol) server called ClipToWSL that enables coding agents like Claude Code to read the contents of the Windows clipboard. This will support use cases such as:
+- "Read the image in the clipboard and explain it to me"
+- "Read the data in the clipboard and tell me the top 3 products by quantity sold"
+
+## Architecture
+The MCP consists of two components:
+
+### 1. Windows Clipboard Reader (Executable)
+A lightweight Windows executable that reads clipboard content using Windows API calls and saves it to a file with the appropriate extension.
+
+**Requirements:**
+- **Language**: C, C++, C# with AOT compilation, or any language commonly used for Windows development
+- **Dependencies**: Minimal - should only require Windows system libraries
+- **Performance**: Small file size, fast loading, and quick execution
+- **Output**: Save clipboard content to files with proper extensions indicating content type
+
+**Content Handling:**
+- **Images**: Convert to PNG format
+- **Text**: Save as UTF-8 encoded .txt file
+- **Other formats**: Attempt conversion to either image or text format
+- **Priority**: When both text and image content are available, prioritize saving the image content
+
+### 2. MCP Server
+An MCP server that provides coding agents access to the clipboard content saved by the Windows executable.
+
+**Requirements:**
+- **Language**: Use a commonly adopted language for MCP development
+- **Compatibility**: Easy installation and integration with coding agents like Claude Code
+- **Functionality**: Expose clipboard content through MCP protocol for agent consumption
+
+## Technical Considerations
+- No specific technology preferences beyond the requirements listed above
+- Focus on simplicity, reliability, and ease of deployment
+- Ensure seamless integration with existing coding agent workflows

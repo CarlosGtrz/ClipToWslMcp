@@ -1,0 +1,19 @@
+We are going to create an mcp called ClipToWsl. The goal of this mcp is to allow a coding agent like Claude Code to read the contents of Windows' clipboard. For example "Read the image in the clipboard and explain it to me" or "Read the data in the clipboard and tell me the top 3 products by quantity sold".
+
+The mcp will consist of two parts:
+
+1. A simple windows exe that will read the content of windows clipboard using windows API calls and save it to a file, with the proper file extension to identify the type of content (text, image, etc.)
+
+2. The mcp itself, that will give the coding agent access to the content just saved to file
+
+There are no preferences in technology to use.
+
+For the windows exe, it could be C, C++, C# with AOT or any language thats is commonly used and can create small exe without dependencies other than windows. The exe should be simple, small, quick to load and to execute.
+
+If the clipboard contains:
+- Image: it should be converted to png
+- Text: it should be saved to txt, encoded as utf8
+- Other format: it should try to convert them to an image or to text. 
+I both text and image content is available, the image content should be saved.
+
+For the mcp, it should be in a commonly used language for mcp. It should be easy to install in common coding agents like Claude Code.
